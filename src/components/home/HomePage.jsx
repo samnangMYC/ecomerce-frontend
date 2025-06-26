@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import ProductCard from "../shared/ProductCard";
 import { fetchProducts } from "../../store/actions";
 import Loader from "../shared/Loader";
-import Navbar from "../shared/Navbar";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -16,9 +15,7 @@ const HomePage = () => {
   }, [dispatch]);
 
   return (
-    <div className="w-full bg-gray-50 space-y-8">
-      {/* Navigation Section */}
-      <Navbar />
+    <div className="w-full scroll-smooth bg-gray-50 space-y-8 mt-8">
 
       {/* Hero Section */}
       <HeroBanner />
@@ -39,7 +36,7 @@ const HomePage = () => {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {products &&
-                products.slice(0, 8).map((product) => (
+                products.slice(0, 4).map((product) => (
                   <div key={product.productId}>
                     <ProductCard product={product} />
                   </div>

@@ -8,7 +8,6 @@ import "swiper/css/effect-fade";
 import {
   Navigation,
   Pagination,
-  History,
   Autoplay,
   EffectFade,
 } from "swiper/modules";
@@ -36,7 +35,7 @@ const HeroBanner = () => {
           disableOnInteraction: false,
         }}
         history={{ key: "slide" }}
-        modules={[Navigation, Pagination, EffectFade, History, Autoplay]}
+        modules={[Navigation, Pagination, EffectFade, Autoplay]}
         pagination={{ clickable: true }}
         className="mySwiper"
         effect="fade"

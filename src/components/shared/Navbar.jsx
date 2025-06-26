@@ -33,7 +33,7 @@ const Navbar = () => {
   }, [location, isMenuOpen]);
 
   return (
-    <nav className="bg-indigo-800 text-white h-20 flex items-center justify-between px-6 relative z-50">
+    <nav className="bg-indigo-800 top-0 sticky text-white h-20 flex items-center justify-between px-8 z-50">
       {/* Logo */}
       <Link to="/" className="text-2xl font-bold">
         ShopEase
@@ -50,7 +50,7 @@ const Navbar = () => {
       {/* Desktop Nav */}
       <ul
         ref={containerRef}
-        className="hidden md:flex items-center space-x-10 relative cursor-pointer select-none"
+        className="hidden md:flex items-center space-x-8 lg:space-x-10 relative cursor-pointer select-none"
       >
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path;
@@ -91,7 +91,9 @@ const Navbar = () => {
 
         <Link
           to="/signin"
-          className="text-white hover:text-orange-300 transition-colors duration-300"
+          className="text-white font-[poppins] bg-gradient-to-r from-indigo-500 from-10% px-4 py-2 rounded-md via-sky-500 to-emerald-500
+             hover:text-orange-100 transition duration-300 ease-in-out
+             hover:shadow-[0_0_15px_rgb(255,165,0)]"
         >
           Sign In
         </Link>

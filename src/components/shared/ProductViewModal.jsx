@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const ProductViewModal = ({ product, onClose }) => {
+const ProductViewModal = ({ product, onClose,onClick }) => {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -21,8 +21,7 @@ const ProductViewModal = ({ product, onClose }) => {
         >
           {/* Background overlay */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={onClose}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm "
           />
 
           {/* Modal Content */}
@@ -37,7 +36,7 @@ const ProductViewModal = ({ product, onClose }) => {
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl"
+              className="absolute hover:cursor-pointer top-4 right-4 text-gray-500 hover:text-gray-700 text-3xl"
             >
               &times;
             </button>
@@ -77,7 +76,8 @@ const ProductViewModal = ({ product, onClose }) => {
                   </p>
 
                   <button
-                    className="mt-4 w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200"
+                  onClick={onClick}
+                    className="mt-4 w-full hover:cursor-pointer md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200"
                     disabled={Number(product.quantity) <= 0}
                   >
                     {Number(product.quantity) > 0 ? "Add to Cart" : "Out Of Stock"}

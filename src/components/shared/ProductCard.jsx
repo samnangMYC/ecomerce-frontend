@@ -1,5 +1,9 @@
 import { useState } from "react";
 import ProductViewModal from "../shared/ProductViewModal";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/actions";
+import toast from "react-hot-toast";
+
 const ProductCard = ({ product }) => {
   const [openProductViewModal, setOpenProductViewModal] = useState(false);
   const [selectViewProduct, setSelectedViewProduct] = useState("");
@@ -8,8 +12,13 @@ const ProductCard = ({ product }) => {
     setOpenProductViewModal(true);
     setSelectedViewProduct(product);
   };
+  
   const isAvailable = product.quantity && Number(product.quantity) > 0;
+  const dispatch = useDispatch();
 
+  const handleAddToCart = (cartItems) => {
+    dispatch(addToCart(cartItems, 1,toast));
+  };
   return (
     <div
       key={product.productId}
@@ -19,7 +28,7 @@ const ProductCard = ({ product }) => {
         src={product.image}
         alt={product.productName}
         onClick={() => handleProductView(product)}
-        className="w-full h-48 object-cover"
+        className="w-full h-48 lg:h-72 object-cover transform transition-transform duration-300 hover:scale-110"
       />
       <div className="p-4">
         <div onClick={() => handleProductView(product)}>
@@ -41,7 +50,9 @@ const ProductCard = ({ product }) => {
           ${product.price.toFixed(2)}
         </p>
         <button
-          onClick={() => {}}
+          onClick={() => {
+            handleAddToCart(product);
+          }}
           className={`mt-4 w-full hover:cursor-pointer ${
             isAvailable
               ? "bg-indigo-600 hover:bg-indigo-700"
@@ -58,6 +69,7 @@ const ProductCard = ({ product }) => {
           <ProductViewModal
             product={selectViewProduct}
             onClose={() => setOpenProductViewModal(false)}
+            onClick={() => handleAddToCart(product)}
           />
         )}
     </div>

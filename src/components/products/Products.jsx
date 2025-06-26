@@ -7,7 +7,7 @@ import useProductFilter from "../../hook/useProductFilter";
 import Loader from "../shared/Loader";
 import Paginations from "../shared/Paginations";
 import ProductCard from "../shared/ProductCard";
-import Navbar from "../shared/Navbar";
+import { motion } from "framer-motion";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -25,38 +25,39 @@ const Products = () => {
 
   return (
     <>
-    <Navbar />
-  
-    <div className="p-8 xl:p-24 space-y-18 w-full">
-      <Filter categories={categories ?? []} />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div className="p-6 scroll-smooth space-y-12 w-full">
+          <Filter categories={categories ?? []} />
 
-      {isLoading ? (
-        <Loader />
-      ) : errorMessage ? (
-        <p className="text-center text-red-500 col-span-full">{errorMessage}</p>
-      ) : products && products.length > 0 ? (
-        <>
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {products.map((product) => (
-              <div key={product.productId}>
-                <ProductCard product={product} />
+          {isLoading ? (
+            <Loader />
+          ) : errorMessage ? (
+            <p className="text-center text-red-500 col-span-full">
+              {errorMessage}
+            </p>
+          ) : products && products.length > 0 ? (
+            <>
+              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {products.map((product) => (
+                  <div key={product.productId}>
+                    <ProductCard product={product} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="flex pt-10 justify-center">
-            <Paginations
-              numberOfPage={pagination?.totalPages}
-              totalProducts={pagination?.totalElements}
-            />
-          </div>
-        </>
-      ) : (
-        <p className="text-center text-gray-600">No products found.</p>
-      )}
-    </div>
-
-      </>
+              <div className="flex pt-10 justify-center">
+                <Paginations
+                  numberOfPage={pagination?.totalPages}
+                  totalProducts={pagination?.totalElements}
+                />
+              </div>
+            </>
+          ) : (
+            <p className="text-center text-gray-600">No products found.</p>
+          )}
+        </div>
+      </motion.div>
+    </>
   );
 };
 
