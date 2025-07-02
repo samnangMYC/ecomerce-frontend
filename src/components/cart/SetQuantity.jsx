@@ -14,14 +14,14 @@ const SetQuantity = ({
           <button
            disabled={quantity<=1}
             onClick={handleQtyDecrease}
-            className="p-1 rounded bg-gray-200"
+            className="p-1 rounded bg-red-400 text-white hover:cursor-pointer"
           >
             <Minus size={14} />
           </button>
           <span className="text-sm text-black">{quantity}</span>
           <button
             onClick={handleQtyIncrease}
-            className="p-1 rounded bg-gray-200"
+            className="p-1 rounded bg-indigo-400 text-white hover:cursor-pointer"
           >
             <Plus size={14}
              />

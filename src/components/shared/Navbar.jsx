@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -14,9 +16,11 @@ const Navbar = () => {
   const [underlineStyles, setUnderlineStyles] = useState({ left: 0, width: 0 });
   const containerRef = useRef(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cart } = useSelector((state) => state.carts);
 
   useEffect(() => {
     const container = containerRef.current;
+
     if (!container) return;
 
     const activeLink = container.querySelector(
@@ -41,7 +45,7 @@ const Navbar = () => {
 
       {/* Hamburger Icon */}
       <button
-        className="md:hidden text-white text-2xl"
+        className="md:hidden text-white text-2xl hover:cursor-pointer"
         onClick={() => setIsMenuOpen((prev) => !prev)}
       >
         {isMenuOpen ? <FaTimes /> : <FaBars />}
@@ -85,59 +89,67 @@ const Navbar = () => {
         >
           <FaShoppingCart className="w-6 h-6" />
           <span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full w-5 h-5 flex items-center justify-center">
-            2
+            {cart?.length || 0}
           </span>
         </Link>
 
         <Link
-          to="/signin"
+          to="/login"
           className="text-white font-[poppins] bg-gradient-to-r from-indigo-500 from-10% px-4 py-2 rounded-md via-sky-500 to-emerald-500
              hover:text-orange-100 transition duration-300 ease-in-out
              hover:shadow-[0_0_15px_rgb(255,165,0)]"
         >
-          Sign In
+          Login
         </Link>
       </ul>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-indigo-700 flex flex-col items-start px-6 py-4 space-y-4">
-          {navLinks.map((link) => (
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden absolute top-20 left-0 w-full bg-indigo-700 flex flex-col items-start px-6 py-4 space-y-4"
+          >
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`text-lg w-full ${
+                  location.pathname === link.path
+                    ? "text-orange-300 font-semibold"
+                    : "text-white hover:text-orange-300 hover:cursor-pointer"
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+
             <Link
-              key={link.name}
-              to={link.path}
-              className={`text-lg w-full ${
-                location.pathname === link.path
-                  ? "text-orange-300 font-semibold"
-                  : "text-white hover:text-orange-300"
-              }`}
+              to="/cart"
+              className="relative text-white hover:text-orange-300 transition-colors duration-300"
               onClick={() => setIsMenuOpen(false)}
             >
-              {link.name}
+              <FaShoppingCart className="w-6 h-6 inline mr-2" />
+              <span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full w-5 h-5 flex items-center justify-center">
+                {cart?.length || 0}
+              </span>
             </Link>
-          ))}
 
-          <Link
-            to="/cart"
-            className="relative text-white hover:text-orange-300 transition-colors duration-300"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <FaShoppingCart className="w-6 h-6 inline mr-2" />
-            Cart
-            <span className="absolute -top-2 -right-2 bg-red-500 text-xs text-white rounded-full w-5 h-5 flex items-center justify-center">
-              2
-            </span>
-          </Link>
-
-          <Link
-            to="/signin"
-            className="text-white hover:text-orange-300"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Sign In
-          </Link>
-        </div>
-      )}
+            <Link
+              to="/login"
+              className="text-white hover:text-orange-300"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Login
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
