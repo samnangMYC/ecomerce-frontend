@@ -5,6 +5,7 @@ import InputField from "../shared/InputField";
 import { useDispatch } from "react-redux";
 import { authenticateSignInUser } from "../../store/actions";
 import toast from "react-hot-toast";
+import Spinners from "../shared/Spinners";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,9 +22,8 @@ const Login = () => {
   });
   const loginHandler = async (data) => {
     console.log("Login is click");
-    dispatch(authenticateSignInUser(data,toast,reset,navigate,setLoader));
-  }
-
+    dispatch(authenticateSignInUser(data, toast, reset, navigate, setLoader));
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r  px-4">
@@ -75,7 +75,13 @@ const Login = () => {
                         bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 
                         hover:brightness-110 disabled:opacity-50`}
           >
-            {loader ? "Logging in..." : "Login"}
+            {loader ? (
+              <div className="flex items-center justify-center gap-4">
+                <Spinners /> Logging...
+              </div>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
 

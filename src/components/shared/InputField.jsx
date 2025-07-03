@@ -13,11 +13,14 @@ const InputField = ({
   min,
   value,
   placeholder = "",
+  validate,
 }) => {
   const baseStyles =
     "w-full px-4 py-3 border rounded-md bg-white text-slate-800 placeholder-gray-400 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500";
 
-  const errorStyles = errors?.[id]?.message ? "border-red-500" : "border-gray-300";
+  const errorStyles = errors?.[id]?.message
+    ? "border-red-500"
+    : "border-gray-300";
 
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -47,11 +50,11 @@ const InputField = ({
                 }
               : type === "url"
               ? {
-                  value:
-                    /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(:\d+)?(\/\S*)?$/,
+                  value: /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(:\d+)?(\/\S*)?$/,
                   message: "Invalid URL format",
                 }
               : undefined,
+          validate,
         })}
       />
 

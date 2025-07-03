@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import ItemContent from "./ItemContent";
 import CartEmpty from "./CartEmpty";
 import formatPrice from "../../utils/formatPrice";
-
+import { Link } from "react-router-dom";
 const Cart = () => {
   const { cart } = useSelector((state) => state.carts);
     const newCart = { ...cart };
@@ -67,13 +67,13 @@ const Cart = () => {
             <span>{formatPrice(newCart?.totalPrice)}</span>
           </div>
         </div>
-
+        
         {/* Checkout */}
-        <div className="text-right">
-          <button className="mt-4 px-6 py-3 bg-black text-white font-semibold rounded-xl hover:bg-gray-800 transition">
+        <Link to={"/checkout"} className="text-right">
+          <button className="mt-4 hover:cursor-pointer px-6 py-3 bg-black text-white font-semibold rounded-xl hover:bg-gray-800 transition">
             Proceed to Checkout
           </button>
-        </div>
+        </Link>
       </div>
   
     );

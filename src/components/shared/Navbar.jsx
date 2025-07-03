@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import UserMenu from "./UserMenu";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -17,6 +18,9 @@ const Navbar = () => {
   const containerRef = useRef(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { cart } = useSelector((state) => state.carts);
+  const { user } = useSelector((state) => state.auth);
+
+  console.log("User from Redux:", user);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -35,6 +39,7 @@ const Navbar = () => {
       setUnderlineStyles({ left: 0, width: 0 });
     }
   }, [location, isMenuOpen]);
+
 
   return (
     <nav className="bg-indigo-800 top-0 sticky text-white h-20 flex items-center justify-between px-8 z-50">
@@ -92,15 +97,22 @@ const Navbar = () => {
             {cart?.length || 0}
           </span>
         </Link>
-
-        <Link
-          to="/login"
-          className="text-white font-[poppins] bg-gradient-to-r from-indigo-500 from-10% px-4 py-2 rounded-md via-sky-500 to-emerald-500
+        {user && user.username ? (
+          <>
+            <UserMenu userName={user.username} />
+          </>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className="text-white font-[poppins] px-4 py-2 rounded-md bg-gradient-to-r from-indigo-500 from-10%  via-sky-500 to-emerald-500
              hover:text-orange-100 transition duration-300 ease-in-out
              hover:shadow-[0_0_15px_rgb(255,165,0)]"
-        >
-          Login
-        </Link>
+            >
+              Login
+            </Link>
+          </>
+        )}
       </ul>
 
       {/* Mobile Menu */}
@@ -139,14 +151,21 @@ const Navbar = () => {
                 {cart?.length || 0}
               </span>
             </Link>
-
-            <Link
-              to="/login"
-              className="text-white hover:text-orange-300"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Login
-            </Link>
+            {user && user.username ? (
+              <>
+                <UserMenu userName={user.username} />
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-white hover:text-orange-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
