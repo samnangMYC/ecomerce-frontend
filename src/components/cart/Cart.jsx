@@ -70,7 +70,10 @@ const Cart = () => {
         
         {/* Checkout */}
         <Link to={"/checkout"} className="text-right">
-          <button className="mt-4 hover:cursor-pointer px-6 py-3 bg-black text-white font-semibold rounded-xl hover:bg-gray-800 transition">
+          <button className="mt-4 hover:cursor-pointer px-6 py-3 bg-gradient-to-r from-indigo-500 from-10%  via-sky-500 to-emerald-500
+             hover:text-orange-100 duration-300 ease-in-out
+             hover:shadow-[0_0_15px_rgb(255,165,0)]
+              text-white font-semibold rounded-xl hover:bg-gray-800 transition">
             Proceed to Checkout
           </button>
         </Link>

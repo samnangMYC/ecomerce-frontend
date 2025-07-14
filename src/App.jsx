@@ -12,6 +12,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import CheckOut from "./components/checkout/CheckOut";
+import PaymentConfirm from "./components/checkout/PaymentConfirm";
 function App() {
   return (
     <React.Fragment>
@@ -23,11 +24,15 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/checkout" element={<CheckOut />} />
+
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/order-confirm" element={<PaymentConfirm />} />
+          </Route>
 
           <Route path="/" element={<PrivateRoute publicPage />}>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
       </Router>
@@ -35,9 +40,9 @@ function App() {
         toastOptions={{
           style: {
             width: "90%",
-            maxWidth: "90vw", 
-            background: "#372aac",
-            color: "#fff",
+            maxWidth: "90vw",
+          //  background: "#372aac",
+          //  color: "#fff",
             borderRadius: "8px",
             padding: "12px 16px",
           },

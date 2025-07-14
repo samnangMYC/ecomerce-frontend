@@ -91,7 +91,7 @@ const Filter = ({ categories }) => {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md max-w-full">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex text-sm flex-wrap items-center gap-3">
         {/* Search input */}
         <input
           type="text"
@@ -105,7 +105,7 @@ const Filter = ({ categories }) => {
         <select
           value={category}
           onChange={handleCategoryChange}
-          className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-40 px-3 py-2 border border-gray-300 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="All">All Categories</option>
           {categories.map((cat) => (
@@ -119,7 +119,7 @@ const Filter = ({ categories }) => {
         <select
           value={sortBy}
           onChange={handleSortChange}
-          className="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-40 px-3 py-2 border text-gray-600 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="" disabled hidden>
             Sort By

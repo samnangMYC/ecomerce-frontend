@@ -9,8 +9,6 @@ export const cartReducer = (state = initialState, action) => {
     case "ADD_CART":
       const productToAdd = action.payload;
 
-      console.log("DEBUG state.cart:", state.cart);
-
       const existingProduct = Array.isArray(state.cart)
         ? state.cart.find((item) => item.productId === productToAdd.productId)
         : null;
@@ -41,6 +39,20 @@ export const cartReducer = (state = initialState, action) => {
         cart: state.cart.filter(
           (item) => item.productId !== action.payload.productId
         ),
+      };
+    case "GET_USER_CART_PRODUCTS":
+      return {
+        ...state,
+        cart: action.payload,
+        totalPrice: action.totalPrice,
+        cartId: action.cartId,
+      };
+    case "CLEAR_CART":
+      return {
+        ...state,
+        cart: [],
+        totalPrice: 0,
+        cartId: null,
       };
 
     default:

@@ -20,7 +20,7 @@ const Navbar = () => {
   const { cart } = useSelector((state) => state.carts);
   const { user } = useSelector((state) => state.auth);
 
-  console.log("User from Redux:", user);
+  //console.log("User from Redux:", user);
 
   useEffect(() => {
     const container = containerRef.current;
