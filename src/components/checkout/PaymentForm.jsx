@@ -24,7 +24,6 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
     setErrorMessage("");
 
     try {
-      // Optional: Submit any custom validation you added to the PaymentElement (e.g. for address)
       const { error: submitError } = await elements.submit();
       if (submitError) {
         setErrorMessage(submitError.message);
@@ -40,7 +39,7 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${import.meta.env.VITE_FRONTEND_URL}/order-confirm`,
+          return_url: `${window.location.origin}/order-confirm`,
         },
       });
 

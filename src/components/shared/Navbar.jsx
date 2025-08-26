@@ -153,7 +153,7 @@ const Navbar = () => {
             </Link>
             {user && user.username ? (
               <>
-                <UserMenu userName={user.username} />
+                <UserMenu userRole={user.roles} userName={user.username} />
               </>
             ) : (
               <>

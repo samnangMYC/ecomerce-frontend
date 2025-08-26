@@ -18,6 +18,7 @@ const AddressInfo = ({ address = [] }) => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [delayedLoading, setDelayedLoading] = useState(true);
+   const [deleteBtnLoader,setDeleteBtnLoader] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -108,7 +109,7 @@ const AddressInfo = ({ address = [] }) => {
       />
       <DeleteModal
         isOpen={openDeleteModal}
-        loader={btnLoader}
+        loader={deleteBtnLoader}
         setIsOpen={setOpenDeleteModal}
         onDeleteHandler={deleteAddressHandler}
       />

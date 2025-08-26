@@ -12,7 +12,6 @@ const PaymentConfirm = () => {
   const dispatch = useDispatch();
 
   const { cart } = useSelector((state) => state.carts);
-  const { selectedUserCheckOutAddress } = useSelector((state) => state.auth);
 
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,6 +20,11 @@ const PaymentConfirm = () => {
   const clientSecret = searchParams.get("payment_intent_client_secret");
   const redirectStatus = searchParams.get("redirect_status");
 
+  const selectedUserCheckoutAddress = localStorage.getItem("CHECKOUT_ADDRESS")
+    ? JSON.parse(localStorage.getItem("CHECKOUT_ADDRESS"))
+    : [];
+  // const selectedUserCheckOutAddress = useSelector((state) => state.auth);
+
   useEffect(() => {
     if (
       paymentIntent &&
@@ -28,21 +32,25 @@ const PaymentConfirm = () => {
       redirectStatus &&
       cart &&
       cart.length > 0 &&
-      selectedUserCheckOutAddress
+      selectedUserCheckoutAddress
     ) {
       const sendData = {
-        addressId: selectedUserCheckOutAddress.addressId,
+        addressId: selectedUserCheckoutAddress.addressId,
         pgName: "Stripe",
         pgPaymentId: paymentIntent,
         pgStatus: "succeeded",
-        pgResponseMessage: "Payment successful"
+        pgResponseMessage: "Payment successful",
       };
+      console.log(selectedUserCheckoutAddress);
+      console.log(sendData);
 
-      dispatch(stripePaymentConfirmation(sendData, setErrorMessage, setLoading, toast));
+      dispatch(
+        stripePaymentConfirmation(sendData, setErrorMessage, setLoading, toast)
+      );
     } else {
       setLoading(false);
     }
-  }, [paymentIntent, clientSecret, redirectStatus, cart, selectedUserCheckOutAddress]);
+  }, [paymentIntent, clientSecret, redirectStatus, cart]);
 
   const isSuccess = redirectStatus === "succeeded";
 
@@ -59,7 +67,9 @@ const PaymentConfirm = () => {
                 <h2 className="text-2xl font-semibold mt-4">
                   Payment Successful
                 </h2>
-                <p className="text-gray-600">Your order has been placed.</p>
+                <p className="text-gray-600">
+                  Thanks for purchase, Your order has been placed!
+                </p>
               </>
             ) : (
               <>
@@ -76,29 +86,71 @@ const PaymentConfirm = () => {
             )}
           </div>
 
-          {cart?.length > 0 && selectedUserCheckOutAddress && (
-            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
-              <h3 className="text-lg font-medium">Order Summary</h3>
-              <ul className="divide-y">
+          {cart?.length > 0 && selectedUserCheckoutAddress && (
+            <div className="bg-white shadow-md p-6 rounded-xl space-y-4">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Order Summary
+              </h3>
+
+              <ul className="divide-y divide-gray-200">
                 {cart.map((item, index) => (
-                  <li key={index} className="py-2 flex justify-between">
-                    <span className="text-gray-700">
-                      {item.product?.title || "Item"}
+                  <li
+                    key={index}
+                    className="py-3 flex justify-between items-center"
+                  >
+                    <span className="text-gray-700 font-medium">
+                      {item.productName || "Item"}
                     </span>
-                    <span className="text-gray-800 font-semibold">
-                      ${item.totalPrice?.toFixed(2) || "0.00"}
+                    <span className="text-gray-900 font-semibold">
+                      ${item.specialPrice?.toFixed(2) || "0.00"}
                     </span>
                   </li>
                 ))}
               </ul>
 
-              <div>
-                <h4 className="text-md font-medium mt-4">Shipping To:</h4>
+              {/* Totals */}
+              <div className="space-y-2 pt-4">
+                <div className="flex justify-between text-gray-600">
+                  <span>Subtotal</span>
+                  <span>
+                    $
+                    {cart
+                      .reduce((sum, item) => sum + (item.specialPrice || 0), 0)
+                      .toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Shipping</span>
+                  <span>$0.00</span>
+                </div>
+                <div className="flex justify-between text-gray-800 font-bold text-lg border-t pt-2">
+                  <span>Total</span>
+                  <span>
+                    $
+                    {(
+                      cart.reduce(
+                        (sum, item) => sum + (item.specialPrice || 0),
+                        0
+                      ) + 0
+                    ).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Shipping Address */}
+              <div className="mt-4 bg-gray-50 p-4 rounded-lg">
+                <h4 className="text-md font-medium text-gray-800">
+                  Shipping To:
+                </h4>
                 <p className="text-sm text-gray-600 mt-1">
-                  {selectedUserCheckOutAddress.name} -{" "}
-                  {selectedUserCheckOutAddress.phone}
+                  {selectedUserCheckoutAddress.buildingName} -{" "}
+                  {selectedUserCheckoutAddress.city}
                   <br />
-                  {selectedUserCheckOutAddress.fullAddress}
+                  {selectedUserCheckoutAddress.street}
+                  <br />
+                  {selectedUserCheckoutAddress.state}
+                  <br />
+                  {selectedUserCheckoutAddress.country}
                 </p>
               </div>
             </div>

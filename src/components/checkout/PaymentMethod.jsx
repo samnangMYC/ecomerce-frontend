@@ -15,16 +15,17 @@ const PaymentMethod = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.error);
 
   useEffect(() => {
-    if (cart && cart.length > 0 && !cartId && !errorMessage) {
+    if (cart.length > 0 && !cartId && !errorMessage) {
       const sendCartItems = cart.map((item) => {
         return {
           productId: item.productId,
           quantity: item.quantity,
         };
       });
-
       dispatch(createUserCart(sendCartItems));
+
     }
+    console.log()
   }, [dispatch, cartId]);
 
   const paymentMethodHandler = (method) => {

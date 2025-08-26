@@ -28,7 +28,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         clientSecret: null,
-        selectedUserCheckOutAddress: null
+        selectedUserCheckoutAddress: null
       };
     case "LOG_OUT":
       return initialState;

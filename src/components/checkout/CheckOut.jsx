@@ -35,8 +35,6 @@ const CheckOut = () => {
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
-    } else {
-      // Handle place order logic here
     }
   };
 
@@ -87,7 +85,7 @@ const CheckOut = () => {
           )}
         </div>
       )}
-
+  
       {/* Bottom Navigation */}
       <div className="flex justify-between bg-white px-4 md:px-14 items-center fixed z-50 h-20 bottom-0 left-0 right-0 border-t">
         <Button

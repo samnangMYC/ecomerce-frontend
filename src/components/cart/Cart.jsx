@@ -3,6 +3,7 @@ import ItemContent from "./ItemContent";
 import CartEmpty from "./CartEmpty";
 import formatPrice from "../../utils/formatPrice";
 import { Link } from "react-router-dom";
+
 const Cart = () => {
   const { cart } = useSelector((state) => state.carts);
     const newCart = { ...cart };

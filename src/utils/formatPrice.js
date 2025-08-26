@@ -1,4 +1,4 @@
-const formatPrice = (amount) => {
+ const formatPrice = (amount) => {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -6,3 +6,5 @@ const formatPrice = (amount) => {
 };
 
 export default formatPrice;
+
+

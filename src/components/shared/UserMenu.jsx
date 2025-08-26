@@ -12,10 +12,11 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../store/actions";
+import { FaBoxes, FaMitten } from "react-icons/fa";
 
-const UserMenu = ({ userName = "Unknown" }) => {
+const UserMenu = ({ userRole, userName = "Unknown" }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useDispatch();
@@ -97,12 +98,31 @@ const UserMenu = ({ userName = "Unknown" }) => {
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+      {userRole === "ROLE_ADMIN" || "ROLE_SELLER" ?
+      (
+        <Link to={"/admin/dashboard"}>
+         <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+             <FaBoxes fontSize="small" />
+          </ListItemIcon>
+          Dashboard
+        </MenuItem>
+        </Link>
+       
+      ):(
+      
+         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ShoppingCartIcon fontSize="small" />
           </ListItemIcon>
           Order
         </MenuItem>
+      )
+        
+      }
+
+       
+
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />

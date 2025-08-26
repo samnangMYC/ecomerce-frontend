@@ -21,7 +21,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
   });
 
   const addAddressHandler = async (data) => {
-   // console.log("Address submitted", data);
+   console.log("Address submitted", data);
 
     dispatch(addUpdateUserAddress(data, toast, address?.addressId, setOpenAddressModal));
 
