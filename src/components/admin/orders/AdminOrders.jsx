@@ -3,9 +3,12 @@ import OrderTable from "./OrderTable";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useOrderFilter } from "../../../hook/useOrderFilter";
+import Spinners from "../../shared/Spinners";
+import Loader from "../../shared/Loader";
 
 const AdminOrders = () => {
   const { adminOrder, pagination } = useSelector((state) => state.orders);
+  const { isLoading, errorMessage } = useSelector((state) => state.error);
 
   useOrderFilter();
 
@@ -31,9 +34,11 @@ const AdminOrders = () => {
             View Products
           </button>
         </div>
+      ) : isLoading ? (
+        <Loader />
       ) : (
         <div className="w-full overflow-x-auto ">
-            <OrderTable adminOrders={adminOrder} pagination={pagination} />
+          <OrderTable adminOrders={adminOrder} pagination={pagination} />
         </div>
       )}
     </div>

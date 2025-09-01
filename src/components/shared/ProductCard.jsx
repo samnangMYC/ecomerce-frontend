@@ -3,33 +3,44 @@ import ProductViewModal from "../shared/ProductViewModal";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/actions";
 import toast from "react-hot-toast";
-
+import imgPlaceholder from "../../assets/image-placeholder.png";
 const ProductCard = ({ product }) => {
   const [openProductViewModal, setOpenProductViewModal] = useState(false);
   const [selectViewProduct, setSelectedViewProduct] = useState("");
+  
 
   const handleProductView = (product) => {
     setOpenProductViewModal(true);
     setSelectedViewProduct(product);
   };
-  
+
   const isAvailable = product.quantity && Number(product.quantity) > 0;
   const dispatch = useDispatch();
 
   const handleAddToCart = (cartItems) => {
-    dispatch(addToCart(cartItems, 1,toast));
+    dispatch(addToCart(cartItems, 1, toast));
   };
   return (
     <div
       key={product.productId}
       className="rounded-2xl shadow-lg bg-white overflow-hidden hover:cursor-pointer hover:shadow-xl transition-shadow duration-300"
     >
-      <img
-        src={product.image}
-        alt={product.productName}
-        onClick={() => handleProductView(product)}
-        className="w-full h-48 lg:h-72 object-cover transform transition-transform duration-300 hover:scale-110"
-      />
+      {product?.image ? (
+        <img
+          src={product.image}
+          alt={product.productName}
+          onClick={() => handleProductView(product)}
+          className="w-full h-48 lg:h-72 object-cover transform transition-transform duration-300 hover:scale-110"
+        />
+      ) : (
+        <img
+          src={imgPlaceholder}
+          alt={product.productName}
+          onClick={() => handleProductView(product)}
+          className="w-full h-48 lg:h-72 object-cover transform transition-transform duration-300 hover:scale-110"
+        />
+      )}
+
       <div className="p-4">
         <div onClick={() => handleProductView(product)}>
           <h2 className="text-lg line-clamp-1 font-semibold text-gray-800 hover:text-orange-400">
@@ -68,8 +79,8 @@ const ProductCard = ({ product }) => {
         selectViewProduct.productId === product.productId && (
           <ProductViewModal
             product={selectViewProduct}
-            onClose={() => setOpenProductViewModal(false)}
-            onClick={() => handleAddToCart(product)}
+            setOpen={setOpenProductViewModal}
+            addToCardHandler ={() => handleAddToCart(product)}
           />
         )}
     </div>

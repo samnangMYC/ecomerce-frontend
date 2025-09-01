@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import api from "../../api/api";
 
 export const fetchProducts = (queryString) => async (dispatch) => {
@@ -403,13 +404,14 @@ export const updateOrderStatusFromDashboard = (
 
       dispatch({ type: "BUTTON_LOADER" });
 
-      const { data } = await api.put(`admin/order/${orderId}/status`, {status: orderStatus});
+      const { data } = await api.put(`admin/order/${orderId}/status`, {
+        status: orderStatus,
+      });
 
       dispatch(getUserAddresses());
       toast.success("Order update successfully");
 
       await dispatch(getOrdersForDashboard());
-
     } catch (err) {
       console.log(err);
       toast.error(err?.response?.data?.message || "Internal Server Error");
@@ -418,3 +420,104 @@ export const updateOrderStatusFromDashboard = (
     }
   };
 };
+
+export const dashboardProductsAction = (queryString) => async (dispatch) => {
+  try {
+    dispatch({ type: "IS_FETCHING" });
+
+    const { data } = await api.get(`/admin/products?${queryString}`);
+    dispatch({
+      type: "FETCH_PRODUCTS",
+      payload: data.content,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      lastPage: data.lastPage,
+    });
+    dispatch({ type: "IS_SUCCESS" });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: "IS_ERROR",
+      payload:
+        error?.response?.data?.message || "Failed to fetch dashboard product",
+    });
+  }
+};
+
+export const updateProductFromDashboard =
+  (sendData, toast, reset, setLoader, setOpen) => async (dispatch) => {
+    try {
+      setLoader(true);
+      await api.put(`/admin/products/${sendData.id}`, sendData);
+      toast.success("Product update successful");
+      setLoader(false);
+      setOpen(false);
+      await dispatch(dashboardProductsAction());
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.description || "Failed to update product"
+      );
+    }
+  };
+
+export const addNewProductFromDashboard =
+  (sendData, toast, reset, setLoader, setOpen) =>
+  async (dispatch, getState) => {
+    try {
+      setLoader(true);
+      await api.post(
+        `/admin/categories/${sendData.categoryId}/product`,
+        sendData
+      );
+      toast.success("Product created successfully");
+      reset();
+      setLoader(false);
+      setOpen(false);
+      await dispatch(dashboardProductsAction());
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Product creation failed");
+    } 
+  };
+
+export const deleteProduct =
+  (toast, productId, setLoader, setOpenDeleteModal) =>
+  async (dispatch, getState) => {
+    try {
+      setLoader(true);
+
+      await api.delete(`/admin/products/${productId}`);
+      toast.success("Product delete succesfully");
+      setLoader(false);
+      setOpenDeleteModal(false);
+      await dispatch(dashboardProductsAction());
+    } catch (error) {
+      //  console.log(error);
+      toast.error(error?.response?.data?.message || "Error Occurred!");
+    }
+  };
+
+export const updateProductImageFromDashboard =
+  (formData, productId, toast, setLoader, setOpen) => async (dispatch) => {
+    try {
+      if (setLoader) setLoader(true);
+
+      await api.put(`/admin/products/${productId}/image`, formData);
+
+      toast.success("Image updated successfully");
+
+      if (setLoader) setLoader(false);
+      if (setOpen) setOpen(false);
+
+      await dispatch(dashboardProductsAction());
+    } catch (error) {
+      if (setLoader) setLoader(false);
+      console.log(error);
+      toast.error(
+        error?.response?.data?.description || "Failed to update product image"
+      );
+    }
+  };

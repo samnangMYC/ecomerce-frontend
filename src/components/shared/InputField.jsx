@@ -6,6 +6,8 @@ const InputField = ({
   type = "text",
   errors,
   register,
+  step,
+  disabled,
   required = false,
   message = "This field is required",
   labelClassName = "",
@@ -35,13 +37,16 @@ const InputField = ({
         id={id}
         type={type}
         placeholder={placeholder}
+        step={step}
         defaultValue={value}
+        disabled={disabled}
         className={`${baseStyles} ${errorStyles} ${inputClassName}`}
         {...register(id, {
           required: required ? { value: true, message } : false,
           minLength: min
-            ? { value: min, message: `Minimum ${min} characters required.` }
-            : undefined,
+            ? { value: min, message: `Minimum ${min} character is required` }
+            : null,
+
           pattern:
             type === "email"
               ? {

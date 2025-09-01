@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { X, ShoppingCart } from "lucide-react";
-import DialogContent from "@mui/material/DialogContent";
 
 const Modal = ({ title, isOpen, setIsOpen, children }) => {
   return (
@@ -20,19 +18,20 @@ const Modal = ({ title, isOpen, setIsOpen, children }) => {
         >
           <div className="flex h-full flex-col bg-white shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-b-indigo-600">
               <div className="flex items-center gap-3">
-                <ShoppingCart className="h-6 w-6 text-blue-600" />
-                <h2 className="text-lg font-semibold">{title}</h2>
+                <ShoppingCart className="h-6 w-6 text-indigo-600" />
+                <h2 className="text-lg font-semibold text-indigo-600">{title}</h2>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="p-2 rounded-full hover:cursor-pointer hover:bg-gray-100"
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6 text-red-500" />
               </button>
             </div>
             {children}
+
           </div>
         </DialogPanel>
       </div>

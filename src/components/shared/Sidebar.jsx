@@ -1,6 +1,6 @@
 
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 import {
   FaChartBar,
   FaCube,
@@ -14,7 +14,6 @@ import {
 
 
 const Sidebar = () => {
-  const { user } = useSelector((state) => state.auth);
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -65,7 +64,7 @@ const navigateToHomePage = () => {
       {/* Footer (Logout) */}
       <div className="px-6 py-4 border-t border-gray-200">
         <button
-          onClick={navigateToHomePage} // replace with your logout handler
+          onClick={navigateToHomePage}
           className="flex items-center gap-3 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg w-full transition"
         >
           <FaSignOutAlt className="text-base" />

@@ -1,8 +1,13 @@
 import { useSelector } from "react-redux";
 import { FaAccessibleIcon, FaArrowCircleLeft, FaArrowLeft, FaBars } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = ({ sidebarOpen, setSidebarOpen }) => {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const handleToHome = () => {
+    navigate("/admin/dashboard");
+  }
 
   return (
     <header className="sticky  top-0 z-[100] bg-white border-b-2 border-indigo-200">
@@ -14,12 +19,12 @@ const AdminNavbar = ({ sidebarOpen, setSidebarOpen }) => {
           <button
             type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="-m-2.5 text-gray-700 xl:hidden p-4"
+            className="-m-2.5 text-gray-700 xl:hidden p-4 hover:cursor-pointer"
           >
             <span className="sr-only">
               {sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
             </span>
-            <div className="duration ease-in delay-500">
+            <div className="duration ease-in-out delay-500">
                 {sidebarOpen ? (
               <FaArrowLeft className="text-slate-800 text-2xl" />
             ) : (
@@ -29,9 +34,9 @@ const AdminNavbar = ({ sidebarOpen, setSidebarOpen }) => {
           
           </button>
 
-          <h1 className="text-lg font-semibold text-gray-800 tracking-tight hidden sm:block">
+          <button onClick={handleToHome} className="text-lg hover:cursor-pointer font-semibold text-gray-800 tracking-tight hidden sm:block">
             Dashboard
-          </h1>
+          </button>
         </div>
 
         {/* Right: User profile */}

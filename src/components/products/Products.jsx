@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../store/actions";
 
 import Filter from "./Filter";
-import useProductFilter from "../../hook/useProductFilter";
+import { useProductFilter } from "../../hook/useProductFilter";
 import Loader from "../shared/Loader";
 import Paginations from "../shared/Paginations";
 import ProductCard from "../shared/ProductCard";

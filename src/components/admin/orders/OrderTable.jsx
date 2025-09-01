@@ -2,8 +2,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { adminOrderColumns } from "../../helper/tableColumn";
 import { useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import Modal from "./Modal";
 import UpdateOrderForm from "./UpdateOrderForm";
+import Modal from "../../shared/Modal"
 
 const OrderTable = ({ adminOrders, pagination }) => {
   const [currentPage, setCurrentPage] = useState(
