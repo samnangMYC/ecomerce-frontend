@@ -121,8 +121,6 @@ const UserMenu = ({ userRole, userName = "Unknown" }) => {
         
       }
 
-       
-
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />

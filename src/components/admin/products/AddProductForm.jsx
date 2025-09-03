@@ -70,10 +70,18 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
       const sendData = {
         ...data,
         categoryId: selectedCategories.categoryId,
-        discount: data?.discount / 100
-      }
+        discount: data?.discount / 100,
+      };
       // TODO: Add product creation logic here
-      dispatch(addNewProductFromDashboard(sendData,toast,reset,setIsLoading,setOpen));
+      dispatch(
+        addNewProductFromDashboard(
+          sendData,
+          toast,
+          reset,
+          setIsLoading,
+          setOpen
+        )
+      );
     }
   };
 
@@ -89,12 +97,20 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
     }
   }, [categories]);
 
-  if(categoryLoader) return <Skeleton />
-  if(errorMessage) return <ErrorPage message={errorMessage} />
+  if (categoryLoader)
+    return (
+      <div className="mt-8">
+        <Skeleton />
+      </div>
+    );
+  if (errorMessage) return <ErrorPage message={errorMessage} />;
 
   return (
     <div className="p-6 flex flex-col h-full">
-      <form onSubmit={handleSubmit(saveProductHandler)} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(saveProductHandler)}
+        className="flex flex-col flex-grow space-y-4"
+      >
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <InputField
             label="Product Name *"
@@ -107,10 +123,11 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
             errors={errors}
           />
         </div>
+
         {!update && (
           <div className="flex md:flex-row flex-col gap-4 w-full">
             <SelectTextField
-              label="Select Categeries"
+              label="Select Categories"
               selected={selectedCategories}
               setSelect={setSelectedCategories}
               lists={categories}
@@ -130,7 +147,6 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
             register={register}
             errors={errors}
           />
-
           <InputField
             label="Quantity *"
             required
@@ -156,7 +172,6 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
             register={register}
             errors={errors}
           />
-
           <InputField
             label="Discount % *"
             required
@@ -170,7 +185,7 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
           />
         </div>
 
-        <div className="md:flex-row flex-col gap-4 w-full">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="description" className="text-sm text-slate-800">
             Description *
           </label>
@@ -194,7 +209,10 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
           )}
         </div>
 
-        <div className="flex justify-end gap-4 mb-6 mr-6">
+        {/* Spacer pushes buttons down */}
+        <div className="flex-grow" />
+
+        <div className="flex justify-end gap-4">
           <Button
             variant="outlined"
             color="secondary"
@@ -209,7 +227,7 @@ const AddProductForm = ({ setOpen, update = false, product }) => {
             color="primary"
           >
             {isLoading ? (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <Spinners className="text-white" />
                 Updating...
               </div>

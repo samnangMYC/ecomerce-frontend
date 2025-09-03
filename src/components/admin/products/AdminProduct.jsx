@@ -16,7 +16,6 @@ import ProductViewModal from "../../shared/ProductViewModal";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const AdminProduct = () => {
-
   const { products, pagination } = useSelector((state) => state.products);
 
   useProductFilter();
@@ -32,7 +31,7 @@ const AdminProduct = () => {
 
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
-  const [openImageUploadModal,setOpenImageUploadModal] = useState(false);
+  const [openImageUploadModal, setOpenImageUploadModal] = useState(false);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -57,7 +56,7 @@ const AdminProduct = () => {
   const handleDelete = (product) => {
     setSelectedProduct(product);
     setOpenDeleteModal(true);
-   //console.log("Prod: " +product.id);
+    //console.log("Prod: " +product.id);
   };
   const handleImageUpload = (product) => {
     setOpenImageUploadModal(true);
@@ -77,12 +76,7 @@ const AdminProduct = () => {
   const onDeleteHandler = () => {
     //console.log("Handler : " +selectedProduct );
     dispatch(
-      deleteProduct(
-        toast,
-        selectedProduct?.id,
-        setLoader,
-        setOpenDeleteModal
-      )
+      deleteProduct(toast, selectedProduct?.id, setLoader, setOpenDeleteModal)
     );
   };
 
@@ -91,7 +85,7 @@ const AdminProduct = () => {
   );
 
   return (
-    <div className="overflow-x-auto h-[80vh]">
+    <div className="overflow-x-auto">
       <div className="flex items-center justify-between py-4">
         {/* Title */}
         <p className="font-semibold text-lg">All Products </p>
@@ -108,6 +102,7 @@ const AdminProduct = () => {
           Add Product
         </button>
       </div>
+
       {/* Loading state */}
       {isLoading ? (
         <Loader />
@@ -120,7 +115,7 @@ const AdminProduct = () => {
               <p className="mt-2 text-sm">No products found</p>
             </div>
           ) : (
-            <div className=" overflow-x-auto">
+            <div className="overflow-x-auto">
               <DataGrid
                 className="w-full"
                 rows={tableRecords}
@@ -172,31 +167,20 @@ const AdminProduct = () => {
       <Modal
         isOpen={openImageUploadModal}
         setIsOpen={setOpenImageUploadModal}
-        title={
-          "Add Product Image"
-        }
-        
+        title={"Add Product Image"}
       >
         <ImageUploadForm
           setOpen={setOpenImageUploadModal}
           product={selectedProduct}
         />
-        
       </Modal>
-
-      {/* <ProductViewModal
-        product={selectedProduct}
-        setOpen={setOpenProductModal}
-        open={openProductModal}
-       /> */}
-
-        {openProductModal &&
-        selectedProduct && (
-          <ProductViewModal
-            product={selectedProduct}
-            setOpen={setOpenProductModal}
-          />
-        )}
+      
+      {openProductModal && selectedProduct && (
+        <ProductViewModal
+          product={selectedProduct}
+          setOpen={setOpenProductModal}
+        />
+      )}
 
       <DeleteModal
         open={openDeleteModal}

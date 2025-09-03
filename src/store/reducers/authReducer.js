@@ -3,6 +3,8 @@ const initialState = {
   address: [],
   clientSecret: null,
   selectedUserCheckOutAddress: null,
+  seller: [],
+  pagination: {}
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -18,6 +20,19 @@ export const authReducer = (state = initialState, action) => {
 
     case "REMOVE_CHECKOUT_ADDRESS":
       return { ...state, selectedUserCheckOutAddress: null };
+
+    case "FETCH_SELLER":
+      return {
+        ...state,
+        seller: action.payload,
+        pagination: {
+          pageNumber: action.pageNumber,
+          pageSize: action.pageSize,
+          totalElements: action.totalElements,
+          totalPages: action.totalPages,
+          lastPage: action.lastPage
+        }
+      };
 
     case "CLIENT_SECRET":
       return {

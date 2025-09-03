@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { FaAccessibleIcon, FaArrowCircleLeft, FaArrowLeft, FaBars } from "react-icons/fa";
+import { FaArrowLeft, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = ({ sidebarOpen, setSidebarOpen }) => {

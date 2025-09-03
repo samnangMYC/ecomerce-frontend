@@ -24,14 +24,16 @@ import AdminDashboard from "./components/admin/dashboard/AdminDashboard";
 import AdminCategories from "./components/admin/categories/AdminCategories";
 import AdminSeller from "./components/admin/seller/AdminSeller";
 import AdminOrders from "./components/admin/orders/AdminOrders";
+//import { useLocation } from "react-router-dom";
+import RouteChangeLoader from "./components/shared/RouteChangeLoader";
 
-// 👇 Wrapper to access useLocation inside Router
 const AppContent = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <>
+      {isAdminRoute && <RouteChangeLoader />}
       {!isAdminRoute && <Navbar />}
 
       <Routes>
@@ -53,7 +55,7 @@ const AppContent = () => {
 
         <Route path="/" element={<PrivateRoute adminOnly />}>
           <Route path="/admin" element={<AdminLayout />}>
-            <Route path="dashboard" element={<AdminDashboard/>} />
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="products" element={<AdminProduct />} />
             <Route path="categories" element={<AdminCategories />} />

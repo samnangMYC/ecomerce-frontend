@@ -1,9 +1,7 @@
-import React from "react";
 import OrderTable from "./OrderTable";
 import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useOrderFilter } from "../../../hook/useOrderFilter";
-import Spinners from "../../shared/Spinners";
 import Loader from "../../shared/Loader";
 
 const AdminOrders = () => {

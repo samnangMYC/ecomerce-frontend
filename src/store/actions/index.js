@@ -455,6 +455,7 @@ export const updateProductFromDashboard =
       setLoader(false);
       setOpen(false);
       await dispatch(dashboardProductsAction());
+      reset();
     } catch (error) {
       console.log(error);
       toast.error(
@@ -480,7 +481,7 @@ export const addNewProductFromDashboard =
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || "Product creation failed");
-    } 
+    }
   };
 
 export const deleteProduct =
@@ -521,3 +522,110 @@ export const updateProductImageFromDashboard =
       );
     }
   };
+
+export const getCategoriesFromDashboard = (queryString) => async (dispatch) => {
+  try {
+    dispatch({ type: "IS_FETCHING" });
+
+    const { data } = await api.get(`/admin/categories?${queryString}`);
+    dispatch({
+      type: "FETCH_CATEGORIES",
+      payload: data.content,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      lastPage: data.lastPage,
+    });
+    dispatch({ type: "IS_SUCCESS" });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch orders data",
+    });
+  }
+};
+export const updateCategoryFromDashboard =
+  (sendData, toast, reset, setLoader, setOpen) => async (dispatch) => {
+    try {
+      setLoader(true);
+      await api.put(`/admin/categories`, sendData);
+      toast.success("Category update successfully");
+      setOpen(false);
+      await dispatch(getCategoriesFromDashboard());
+      reset();
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.description || "Failed to update category"
+      );
+    } finally {
+      setLoader(false);
+    }
+  };
+
+export const deleteCategory =
+  (toast, categoryId, setLoader, setOpenDeleteModal) =>
+  async (dispatch, getState) => {
+    try {
+      setLoader(true);
+
+      await api.delete(`/admin/categories/${categoryId}`);
+      toast.success("Category delete succesfully");
+
+      setOpenDeleteModal(false);
+      await dispatch(getCategoriesFromDashboard());
+    } catch (error) {
+      //  console.log(error);
+      toast.error(error?.response?.data?.message || "Error Occurred!");
+    } finally {
+      setLoader(false);
+    }
+  };
+export const addNewCategoryFromDashboard =
+  (sendData, toast, reset, setLoader, setOpen) =>
+  async (dispatch, getState) => {
+    try {
+      setLoader(true);
+      await api.post(
+        `/admin/categories`,
+        sendData
+      );
+      toast.success("Category created successfully");
+      reset();
+      setOpen(false);
+      await dispatch(getCategoriesFromDashboard());
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Category creation failed");
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  export const getSellerFromDashboard = (queryString) => async (dispatch) => {
+  try {
+    dispatch({ type: "IS_FETCHING" });
+
+    const { data } = await api.get(`/auth/sellers?${queryString}`);
+    dispatch({
+      type: "FETCH_SELLER",
+      payload: data.content,
+      pageNumber: data.pageNumber,
+      pageSize: data.pageSize,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      lastPage: data.lastPage,
+    });
+    dispatch({ type: "IS_SUCCESS" });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: "IS_ERROR",
+      payload: error?.response?.data?.message || "Failed to fetch sellers data",
+    });
+  }
+};
