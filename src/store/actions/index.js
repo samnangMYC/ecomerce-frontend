@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import api from "../../api/api";
 
 export const fetchProducts = (queryString) => async (dispatch) => {
@@ -67,6 +66,7 @@ export const addToCart =
     // if inStock add
     if (isQuantityExist) {
       dispatch({ type: "ADD_CART", payload: { ...data, quantity: qty } });
+
       toast.success(`${data?.productName} added to cart`);
       localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 
@@ -121,6 +121,7 @@ export const removeFromCart = (data, toast) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 };
 
+
 export const authenticateSignInUser =
   (sendData, toast, reset, navigate, setLoader) => async (dispatch) => {
     try {
@@ -165,7 +166,7 @@ export const logoutUser = (navigate) => (dispatch) => {
   navigate("/login");
 };
 
-export const addUpdateUserAddress = (sendData, toast, addressId, setIsOpen) => {
+export const addUpdateUserAddress = (sendData, toast,setLoader, addressId, setIsOpen) => {
   return async (dispatch, getState) => {
     try {
       const { user } = getState().auth;
@@ -189,6 +190,7 @@ export const addUpdateUserAddress = (sendData, toast, addressId, setIsOpen) => {
         dispatch({ type: "IS_ERROR", payload: null });
       }
     } finally {
+      setLoader(false);
       setIsOpen(false);
     }
   };
@@ -260,6 +262,7 @@ export const addPaymentMethod = (method) => {
   };
 };
 export const createUserCart = (sendCartItems) => async (dispatch, getState) => {
+  console.log(sendCartItems);
   try {
     console.log(sendCartItems);
     dispatch({ type: "IS_FETCHING" });
@@ -325,7 +328,6 @@ export const stripePaymentConfirmation =
   async (dispatch, getState) => {
     try {
       setLoading(true);
-      const jwtToken = localStorage.getItem("jwtToken");
 
       const res = await api.post("/order/users/payments/online", sendData);
       console.log(res);
@@ -527,7 +529,7 @@ export const getCategoriesFromDashboard = (queryString) => async (dispatch) => {
   try {
     dispatch({ type: "IS_FETCHING" });
 
-    const { data } = await api.get(`/admin/categories?${queryString}`);
+    const { data } = await api.get(`/public/categories?${queryString}`);
     dispatch({
       type: "FETCH_CATEGORIES",
       payload: data.content,

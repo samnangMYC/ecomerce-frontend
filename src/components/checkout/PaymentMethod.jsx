@@ -15,18 +15,20 @@ const PaymentMethod = () => {
   const { isLoading, errorMessage } = useSelector((state) => state.error);
 
   useEffect(() => {
-    if (cart.length > 0 && !cartId && !errorMessage) {
-      const sendCartItems = cart.map((item) => {
-        return {
+    // Prevent duplicate dispatch
+    if (cart?.length > 0 && !cartId && !errorMessage) {
+      const sendCartItems = cart
+        .filter(item => item.productId && item.quantity > 0)
+        .map(item => ({
           productId: item.productId,
           quantity: item.quantity,
-        };
-      });
-      dispatch(createUserCart(sendCartItems));
+        }));
 
+      if (sendCartItems?.length > 0) {
+        dispatch(createUserCart(sendCartItems));
+      }
     }
-    console.log()
-  }, [dispatch, cartId]);
+  }, [dispatch, cart, cartId, errorMessage]);
 
   const paymentMethodHandler = (method) => {
     dispatch(addPaymentMethod(method));

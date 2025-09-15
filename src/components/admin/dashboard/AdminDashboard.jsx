@@ -10,7 +10,8 @@ const AdminDashboard = () => {
 
   const dispatch = useDispatch();
 
-  const { analytics: { productCount, totalRevenue, totalOrders }} = useSelector((state) => state.admin);
+  const { analytics } = useSelector((state) => state.admin);
+  console.log(analytics);
 
   const { isLoading,errorMessage} = useSelector((state) => state.error);
   useEffect(() => {
@@ -27,19 +28,19 @@ const AdminDashboard = () => {
   const stats = [
     {
       title: 'Total Products',
-      amount: '1,245',
+      amount: analytics?.productCount || 0,
       icon: <Package className="w-8 h-8 text-white" />,
       bgColor: 'bg-indigo-600',
     },
     {
       title: 'Total Revenue',
-      amount: '8950',
+      amount: analytics?.totalRevenue || 0,
       icon: <DollarSign className="w-8 h-8 text-white" />,
       bgColor: 'bg-green-600',
     },
     {
       title: 'Total Orders',
-      amount: '4,210',
+      amount: analytics?.totalOrders || 0,
       icon: <ShoppingCart className="w-8 h-8 text-white" />,
       bgColor: 'bg-yellow-500',
     },

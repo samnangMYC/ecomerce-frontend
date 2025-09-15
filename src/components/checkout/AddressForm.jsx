@@ -8,8 +8,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 const AddAddressForm = ({ address, setOpenAddressModal }) => {
   const dispatch = useDispatch();
-  console.log(address);
- const [loader, setLoader] = useState(false);
+  //  console.log(address);
+  const [loader, setLoader] = useState(false);
+  const { error } = useSelector((state) => state.error);
+
   const {
     register,
     handleSubmit,
@@ -21,9 +23,9 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
   });
 
   const addAddressHandler = async (data) => {
-   console.log("Address submitted", data);
+    //console.log("Address submitted", data);
 
-    dispatch(addUpdateUserAddress(data, toast, address?.addressId, setOpenAddressModal));
+    dispatch(addUpdateUserAddress(data, toast, setLoader, address?.addressId, setOpenAddressModal));
 
     reset();
   };
@@ -36,11 +38,11 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
       setValue("state", address?.state);
       setValue("pincode", address?.pincode);
       setValue("country", address?.country);
-    }else{
+    } else {
       console.log("Address not working");
     }
   }, [address]);
-  
+
 
   return (
     <form className="space-y-3" onSubmit={handleSubmit(addAddressHandler)}>
@@ -109,6 +111,14 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         register={register}
         errors={errors}
       />
+
+      {
+        error && (
+          <p className="text-red-500">
+            {error}
+          </p>
+        )
+      }
 
       <button
         type="submit"

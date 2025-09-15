@@ -1,4 +1,3 @@
-import { MdAddShoppingCart } from "react-icons/md";
 import Loader from "../../shared/Loader";
 import { UserX } from "lucide-react";
 import { DataGrid } from "@mui/x-data-grid";
@@ -8,8 +7,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSellerFilter } from "../../../hook/useSellerFilter";
 
-const AdminSeller = () => {
-  const dispatch = useDispatch();
+const AdminSeller = () => {;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const params = new URLSearchParams(searchParams);
@@ -23,7 +21,7 @@ const AdminSeller = () => {
   useSellerFilter();
 
   const tableRecords = seller?.map((item) => ({
-    id: item.id,
+    id: item.userId,
     username: item.username,
     email: item.email,
   }));
@@ -47,17 +45,6 @@ const AdminSeller = () => {
         {/* Title */}
         <p className="font-semibold text-lg">All Seller </p>
 
-        {/* Add Categories Button */}
-        {/* <button
-          type="button"
-          // onClick={handleSave}
-          className="flex idhover:cursor-pointer hover:cursor-pointer items-center gap-2 text-white bg-gradient-to-br from-indigo-600 to-indigo-500 
-                                   hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-indigo-300 
-                                   dark:focus:ring-indigo-800 font-medium rounded-lg text-sm px-5 py-2.5"
-        >
-          <MdAddShoppingCart size={18} />
-          Add Seller
-        </button> */}
       </div>
 
       {isLoading ? (

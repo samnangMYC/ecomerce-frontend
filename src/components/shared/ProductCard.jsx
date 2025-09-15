@@ -8,7 +8,6 @@ const ProductCard = ({ product }) => {
   const [openProductViewModal, setOpenProductViewModal] = useState(false);
   const [selectViewProduct, setSelectedViewProduct] = useState("");
   
-
   const handleProductView = (product) => {
     setOpenProductViewModal(true);
     setSelectedViewProduct(product);

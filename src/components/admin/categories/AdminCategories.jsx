@@ -29,6 +29,11 @@ const AdminCategories = () => {
   const [searchParams] = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const pathname = useLocation().pathname;
+ const update = (data) => {
+  // placeholder function
+  console.log("update called", data);
+};
+
 
   useCategoriesFilter();
   const emptyCategories = !categories || categories.length === 0;
@@ -143,7 +148,7 @@ const AdminCategories = () => {
           <AddCategoriesForm
             isLoader={isLoader}
             setIsLoader={setIsLoader}
-            update ={openUpdateCategoriesModal ? update : ""}
+            {...(openUpdateCategoriesModal && { update })}
             category={selectedCategory}
             setOpen={
               openUpdateCategoriesModal
