@@ -8,9 +8,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 const AddAddressForm = ({ address, setOpenAddressModal }) => {
   const dispatch = useDispatch();
-  //  console.log(address);
-  const [loader, setLoader] = useState(false);
-  const { error } = useSelector((state) => state.error);
+
+  const { isLoading, errorMessage } = useSelector((state) => state.error);
 
   const {
     register,
@@ -24,9 +23,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
 
   const addAddressHandler = async (data) => {
     //console.log("Address submitted", data);
-
-    dispatch(addUpdateUserAddress(data, toast, setLoader, address?.addressId, setOpenAddressModal));
-
+    dispatch(addUpdateUserAddress(data, toast, address?.addressId, setOpenAddressModal));
     reset();
   };
 
@@ -51,6 +48,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="street"
         type="text"
+        min={4}
         message="*Street Address is required"
         placeholder="Enter your street address"
         register={register}
@@ -62,6 +60,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="buildingName"
         type="text"
+        min={4}
         message="*Building Name is required"
         placeholder="Enter your building name"
         register={register}
@@ -73,6 +72,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="city"
         type="text"
+        min={4}
         message="*City is required"
         placeholder="Enter your city"
         register={register}
@@ -84,6 +84,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="state"
         type="text"
+        min={4}
         message="*State is required"
         placeholder="Enter your state"
         register={register}
@@ -95,6 +96,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="pincode"
         type="text"
+        min={6}
         message="*Postal Code is required"
         placeholder="Enter your postal code"
         register={register}
@@ -106,6 +108,7 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
         required
         id="country"
         type="text"
+        min={4}
         message="*Country is required"
         placeholder="Enter your country"
         register={register}
@@ -113,21 +116,21 @@ const AddAddressForm = ({ address, setOpenAddressModal }) => {
       />
 
       {
-        error && (
+        errorMessage && (
           <p className="text-red-500">
-            {error}
+            {errorMessage}
           </p>
         )
       }
 
       <button
         type="submit"
-        disabled={loader}
+        disabled={isLoading}
         className={`w-full py-3 px-4 rounded-lg hover:cursor-pointer  font-semibold text-white transition 
                         bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 
                         hover:brightness-110 disabled:opacity-50`}
       >
-        {loader ? (
+        {isLoading ? (
           <div className="flex items-center justify-center gap-4">
             <Spinners /> Saving...
           </div>

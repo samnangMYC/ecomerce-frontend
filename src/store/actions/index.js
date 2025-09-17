@@ -166,33 +166,24 @@ export const logoutUser = (navigate) => (dispatch) => {
   navigate("/login");
 };
 
-export const addUpdateUserAddress = (sendData, toast,setLoader, addressId, setIsOpen) => {
+export const addUpdateUserAddress = (sendData, toast, addressId, setOpenAddressModal) => {
   return async (dispatch, getState) => {
+    dispatch({ type:"BUTTON_LOADER" });
     try {
-      const { user } = getState().auth;
-      await api.post(`/addresses`, sendData, {
-        headers: { Authorization: "Bearer " + user.jwtToken },
-      });
-
-      dispatch({ type: "BUTTON_LOADER" });
-      try {
         if (!addressId) {
-          const { data } = await api.post("/addresses", sendData);
+            const { data } = await api.post("/addresses", sendData);
         } else {
-          await api.put(`/addresses/${addressId}`, sendData);
+            await api.put(`/addresses/${addressId}`, sendData);
         }
         dispatch(getUserAddresses());
         toast.success("Address saved successfully");
-        dispatch({ type: "IS_SUCCESS" });
-      } catch (error) {
+        dispatch({ type:"IS_SUCCESS" });
+        setOpenAddressModal(false);
+    } catch (error) {
         console.log(error);
         toast.error(error?.response?.data?.message || "Internal Server Error");
-        dispatch({ type: "IS_ERROR", payload: null });
-      }
-    } finally {
-      setLoader(false);
-      setIsOpen(false);
-    }
+        dispatch({ type:"IS_ERROR", payload: null });
+    } 
   };
 };
 
@@ -262,12 +253,11 @@ export const addPaymentMethod = (method) => {
   };
 };
 export const createUserCart = (sendCartItems) => async (dispatch, getState) => {
-  console.log(sendCartItems);
   try {
     console.log(sendCartItems);
     dispatch({ type: "IS_FETCHING" });
     await api.post("/cart/create", sendCartItems);
-    console.log(response.data);
+    
     await dispatch(getUserCart());
   } catch (error) {
     console.log(error);

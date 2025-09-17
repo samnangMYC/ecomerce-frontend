@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { analyticsAction } from '../../../store/actions'
 import Loader from '../../shared/Loader'
 import ErrorPage from '../../shared/ErrorPage'
+import formatPrice from '../../../utils/formatPrice'
 
 const AdminDashboard = () => {
 
@@ -25,6 +26,8 @@ const AdminDashboard = () => {
     return <ErrorPage message={errorMessage} />
   }
 
+  const totalRevenue = analytics?.totalRevenue || 0;
+
   const stats = [
     {
       title: 'Total Products',
@@ -34,7 +37,7 @@ const AdminDashboard = () => {
     },
     {
       title: 'Total Revenue',
-      amount: analytics?.totalRevenue || 0,
+      amount:  formatPrice(totalRevenue),
       icon: <DollarSign className="w-8 h-8 text-white" />,
       bgColor: 'bg-green-600',
     },

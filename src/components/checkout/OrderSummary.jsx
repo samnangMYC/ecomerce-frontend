@@ -27,6 +27,7 @@ const OrderSummary = ({ cart, address, paymentMethod,totalPrice }) => {
                   No Image
                 </div>
               )}
+        
 
               <div className="flex-1">
                 <h4 className="text-gray-800 font-medium">{item.productName}</h4>

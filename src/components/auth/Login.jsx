@@ -93,7 +93,7 @@ const Login = () => {
         </div>
 
         {/* Social Login Buttons (optional) */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-2 gap-4">
           <button className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:border-gray-400  hover:bg-gray-100">
             <img
               src="https://www.svgrepo.com/show/448227/google.svg"
@@ -110,7 +110,7 @@ const Login = () => {
             />
             Facebook
           </button>
-        </div>
+        </div> */}
 
         {/* Register link */}
         <p className="text-sm text-center text-gray-500 mt-8">

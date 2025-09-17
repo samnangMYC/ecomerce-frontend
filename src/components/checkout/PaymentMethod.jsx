@@ -6,30 +6,27 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { addPaymentMethod, createUserCart } from "../../store/actions";
+import ErrorPage from "../shared/ErrorPage";
 
 const PaymentMethod = () => {
   const dispatch = useDispatch();
 
   const { paymentMethod } = useSelector((state) => state.payment);
-  const { cart, cartId } = useSelector((state) => state.payment);
+  const { cart, cartId } = useSelector((state) => state.carts);
   const { isLoading, errorMessage } = useSelector((state) => state.error);
 
   useEffect(() => {
-    // Prevent duplicate dispatch
-    if (cart?.length > 0 && !cartId && !errorMessage) {
-      const sendCartItems = cart
-        .filter(item => item.productId && item.quantity > 0)
-        .map(item => ({
+    if (cart.length > 0 && !cartId && !errorMessage) {
+      const sendCartItems = cart.map((item) => {
+        return {
           productId: item.productId,
           quantity: item.quantity,
-        }));
+        };
+      });
 
-      if (sendCartItems?.length > 0) {
-        dispatch(createUserCart(sendCartItems));
-      }
+      dispatch(createUserCart(sendCartItems));
     }
-  }, [dispatch, cart, cartId, errorMessage]);
-
+  }, [dispatch, cartId]);
   const paymentMethodHandler = (method) => {
     dispatch(addPaymentMethod(method));
   };
@@ -55,7 +52,7 @@ const PaymentMethod = () => {
         </RadioGroup>
       </FormControl>
 
-      {errorMessage && <ErrorPage message={errorMessage} />}
+      {/* {errorMessage && <ErrorPage message={errorMessage} />} */}
     </div>
   );
 };

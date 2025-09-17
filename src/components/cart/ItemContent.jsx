@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import dummyImage from "../../assets/image-placeholder.png";
 import { motion } from "framer-motion";
 import SetQuantity from "./SetQuantity";
 import { useDispatch } from "react-redux";
@@ -11,8 +11,13 @@ import {
 import toast from "react-hot-toast";
 
 const ItemContent = ({ item }) => {
+
   const [currentQty, setCurrentQty] = useState(item.quantity || 1);
   const dispatch = useDispatch();
+
+   const imageUrl = item.image
+    ? `http://localhost:8080/images/${item.image}`
+    : dummyImage;
 
   useEffect(() => {
     setCurrentQty(item.quantity || 1);
@@ -38,16 +43,18 @@ const ItemContent = ({ item }) => {
     dispatch(removeFromCart(cartItems, toast));
   };
 
+
   return (
     <motion.div
       className="flex flex-col md:grid md:grid-cols-[96px_1fr_120px_96px] items-center bg-white rounded-xl shadow-md p-4 gap-4 mb-4"
       whileHover={{ scale: 1.01 }}
     >
       <img
-        src={item.image}
+        src={imageUrl}
         alt={item.productName}
         className="w-24 h-24 object-cover rounded-lg"
       />
+
       <div>
         <h3 className="text-lg font-medium">{item.productName}</h3>
         <p className="text-sm text-gray-500">

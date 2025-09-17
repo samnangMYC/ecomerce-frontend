@@ -15,10 +15,10 @@ import { bannerList } from "../../utils";
 import { Link } from "react-router-dom";
 
 const colors = [
-  "#FDC200", // Yellow
-  "#FF2C2C", // Red
+  "#c40ef1ff", // Yellow
+  "#0ecac1ff", // Red
   "#21AD61", // Green
-  "#723DA6", // Purple
+  "#6401c7ff", // Purple
 ];
 
 const HeroBanner = () => {

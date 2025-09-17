@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import UpdateOrderForm from "./UpdateOrderForm";
 import Modal from "../../shared/Modal"
+import OrderList from "./OrderList";
 
 const OrderTable = ({ adminOrders, pagination }) => {
   const [currentPage, setCurrentPage] = useState(
@@ -13,6 +14,8 @@ const OrderTable = ({ adminOrders, pagination }) => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [loader, setLoader] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [isListOrderModalOpen, setIsListOrderModalOpen] = useState(false);
+  const [selectedOrderList, setSelectedOrderList] = useState("");
 
   const [searchParams] = useSearchParams();
   const params = new URLSearchParams(searchParams);
@@ -25,6 +28,9 @@ const OrderTable = ({ adminOrders, pagination }) => {
     totalAmount: item.totalAmount,
     status: item.orderStatus,
     date: item.orderDate,
+    orderItems: item.orderItems,
+    payment: item.payment,
+    addressId: item.addressId
   }));
 
   const handlePaginationChange = (paginationModel) => {
@@ -38,6 +44,11 @@ const OrderTable = ({ adminOrders, pagination }) => {
     setSelectedItem(order);
     setIsOrderModalOpen(true);
   };
+  const handleListOrder = (order) => {
+    setSelectedOrderList(order);
+    setIsListOrderModalOpen(true);
+   // console.log("Selected Order: " + selectedOrderList);
+  }
 
   return (
     <div className="space-y-6 w-full">
@@ -49,7 +60,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
           <DataGrid
             className="w-full"
             rows={tableRecords}
-            columns={adminOrderColumns(handleEdit)}
+            columns={adminOrderColumns(handleEdit,handleListOrder)}
             paginationMode="server"
             rowCount={pagination?.totalElements || 0}
             initialState={{
@@ -73,7 +84,7 @@ const OrderTable = ({ adminOrders, pagination }) => {
         </div>
       </div>
 
-      {/* Pass state to modal */}
+      {/* Edit Modal */}
       <Modal
         title="Update Order Status"
         isOpen={isOrderModalOpen}
@@ -87,6 +98,18 @@ const OrderTable = ({ adminOrders, pagination }) => {
           />
         }
       />
+
+      {/*Total Order View Modal */}
+      <Modal
+        title="Order List Information"
+        isOpen={isListOrderModalOpen}
+        setIsOpen={setIsListOrderModalOpen}
+        children={
+          <OrderList orders={selectedOrderList} />
+        }
+      />
+    
+      
     </div>
   );
 };
