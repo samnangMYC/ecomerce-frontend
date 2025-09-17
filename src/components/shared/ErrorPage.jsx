@@ -3,7 +3,7 @@ import { AlertTriangle } from 'lucide-react';
 
 const ErrorPage = ({ message }) => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+
       <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center space-y-4">
         <div className="flex justify-center">
           <AlertTriangle className="w-12 h-12 text-red-500" />
@@ -19,7 +19,7 @@ const ErrorPage = ({ message }) => {
           Reload Page
         </button>
       </div>
-    </div>
+
   );
 };
 

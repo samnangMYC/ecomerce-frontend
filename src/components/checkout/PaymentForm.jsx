@@ -57,7 +57,7 @@ const PaymentForm = ({ clientSecret, totalPrice }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 max-w-lg mx-auto p-4 border rounded-md shadow-sm"
+      className="space-y-6 mb-22 max-w-lg mx-auto p-4 border rounded-md shadow-sm"
     >
       <h1 className="font-semibold text-2xl">Payment Information</h1>
 

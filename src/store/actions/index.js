@@ -53,56 +53,56 @@ export const fetchCategories = () => async (dispatch) => {
 
 export const addToCart =
   (data, qty = 1, toast) =>
-  (dispatch, getState) => {
-    // find product
-    const { products } = getState().products;
-    const getProduct = products.find(
-      (item) => item.productId == data.productId
-    );
+    (dispatch, getState) => {
+      // find product
+      const { products } = getState().products;
+      const getProduct = products.find(
+        (item) => item.productId == data.productId
+      );
 
-    // check for stocks
-    const isQuantityExist = getProduct.quantity >= qty;
+      // check for stocks
+      const isQuantityExist = getProduct.quantity >= qty;
 
-    // if inStock add
-    if (isQuantityExist) {
-      dispatch({ type: "ADD_CART", payload: { ...data, quantity: qty } });
+      // if inStock add
+      if (isQuantityExist) {
+        dispatch({ type: "ADD_CART", payload: { ...data, quantity: qty } });
 
-      toast.success(`${data?.productName} added to cart`);
-      localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+        toast.success(`${data?.productName} added to cart`);
+        localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
 
-      // not show error
-    } else {
-      toast.success(`${data?.productName} out of stock`);
-    }
-  };
+        // not show error
+      } else {
+        toast.success(`${data?.productName} out of stock`);
+      }
+    };
 
 export const increaseCartQuantity =
   (data, toast, currentQuantity, setCurrentQuantity) =>
-  (dispatch, getState) => {
-    // Find the product
-    const { products } = getState().products || [];
+    (dispatch, getState) => {
+      // Find the product
+      const { products } = getState().products || [];
 
-    console.log(products);
+      console.log(products);
 
-    const getProduct = products.find(
-      (item) => item.productId === data.productId
-    );
+      const getProduct = products.find(
+        (item) => item.productId === data.productId
+      );
 
-    const isQuantityExist = getProduct.quantity >= currentQuantity + 1;
+      const isQuantityExist = getProduct.quantity >= currentQuantity + 1;
 
-    if (isQuantityExist) {
-      const newQuantity = currentQuantity + 1;
-      setCurrentQuantity(newQuantity);
+      if (isQuantityExist) {
+        const newQuantity = currentQuantity + 1;
+        setCurrentQuantity(newQuantity);
 
-      dispatch({
-        type: "ADD_CART",
-        payload: { ...data, quantity: newQuantity + 0 },
-      });
-      localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
-    } else {
-      toast.error("Quantity Reached to Limit");
-    }
-  };
+        dispatch({
+          type: "ADD_CART",
+          payload: { ...data, quantity: newQuantity + 0 },
+        });
+        localStorage.setItem("cartItems", JSON.stringify(getState().carts.cart));
+      } else {
+        toast.error("Quantity Reached to Limit");
+      }
+    };
 export const decreaseCartQuantity =
   (data, newQuantity) => (dispatch, getState) => {
     dispatch({
@@ -152,8 +152,8 @@ export const registerNewUser =
       console.log(error);
       toast.error(
         error?.response?.data?.message ||
-          error?.response?.data?.password ||
-          "Internal Server Error!!"
+        error?.response?.data?.password ||
+        "Internal Server Error!!"
       );
     } finally {
       setLoader(false);
@@ -168,22 +168,22 @@ export const logoutUser = (navigate) => (dispatch) => {
 
 export const addUpdateUserAddress = (sendData, toast, addressId, setOpenAddressModal) => {
   return async (dispatch, getState) => {
-    dispatch({ type:"BUTTON_LOADER" });
+    dispatch({ type: "BUTTON_LOADER" });
     try {
-        if (!addressId) {
-            const { data } = await api.post("/addresses", sendData);
-        } else {
-            await api.put(`/addresses/${addressId}`, sendData);
-        }
-        dispatch(getUserAddresses());
-        toast.success("Address saved successfully");
-        dispatch({ type:"IS_SUCCESS" });
-        setOpenAddressModal(false);
+      if (!addressId) {
+        const { data } = await api.post("/addresses", sendData);
+      } else {
+        await api.put(`/addresses/${addressId}`, sendData);
+      }
+      dispatch(getUserAddresses());
+      toast.success("Address saved successfully");
+      dispatch({ type: "IS_SUCCESS" });
+      setOpenAddressModal(false);
     } catch (error) {
-        console.log(error);
-        toast.error(error?.response?.data?.message || "Internal Server Error");
-        dispatch({ type:"IS_ERROR", payload: null });
-    } 
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Internal Server Error");
+      dispatch({ type: "IS_ERROR", payload: null });
+    }
   };
 };
 
@@ -257,7 +257,7 @@ export const createUserCart = (sendCartItems) => async (dispatch, getState) => {
     console.log(sendCartItems);
     dispatch({ type: "IS_FETCHING" });
     await api.post("/cart/create", sendCartItems);
-    
+
     await dispatch(getUserCart());
   } catch (error) {
     console.log(error);
@@ -314,35 +314,37 @@ export const createStripePaymentSecret =
   };
 
 export const stripePaymentConfirmation =
-  (sendData, setErrorMessage, setLoading, toast) =>
-  async (dispatch, getState) => {
-    try {
-      setLoading(true);
+  (sendData, setLoading, toast) =>
+    async (dispatch, getState) => {
+      try {
+        setLoading(true);
 
-      const res = await api.post("/order/users/payments/online", sendData);
-      console.log(res);
+        const res = await api.post("/order/users/payments/online", sendData);
+        console.log(res);
 
-      if (res.data) {
-        console.log("INSIDE RES");
-        localStorage.removeItem("CHECKOUT_ADDRESS");
-        localStorage.removeItem("cartItems");
-        localStorage.removeItem("client-secret");
-        dispatch({ type: "REMOVE_CLIENT_SECRET_ADDRESS" });
-        dispatch({ type: "CLEAR_CART" });
-        toast.success("Order Accepted");
-      } else {
-        setErrorMessage("Payment Failed. Please try again!!");
+        if (res.data) {
+          // console.log("INSIDE RES");
+          localStorage.removeItem("CHECKOUT_ADDRESS");
+          localStorage.removeItem("cartItems");
+          localStorage.removeItem("client-secret");
+          dispatch({ type: "REMOVE_CLIENT_SECRET_ADDRESS" });
+          dispatch({ type: "CLEAR_CART" });
+          toast.success("Order Accepted");
+
+          //await dispatch(getOrdersForDashboard());
+        } else {
+          setErrorMessage("Payment Failed. Please try again!!");
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch({
+          type: "IS_ERROR",
+          payload: error?.response?.data?.message || "Payment Failed!!",
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: "IS_ERROR",
-        payload: error?.response?.data?.message || "Payment Failed!!",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
 export const analyticsAction = () => async (dispatch, getState) => {
   try {
@@ -458,40 +460,40 @@ export const updateProductFromDashboard =
 
 export const addNewProductFromDashboard =
   (sendData, toast, reset, setLoader, setOpen) =>
-  async (dispatch, getState) => {
-    try {
-      setLoader(true);
-      await api.post(
-        `/admin/categories/${sendData.categoryId}/product`,
-        sendData
-      );
-      toast.success("Product created successfully");
-      reset();
-      setLoader(false);
-      setOpen(false);
-      await dispatch(dashboardProductsAction());
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message || "Product creation failed");
-    }
-  };
+    async (dispatch, getState) => {
+      try {
+        setLoader(true);
+        await api.post(
+          `/admin/categories/${sendData.categoryId}/product`,
+          sendData
+        );
+        toast.success("Product created successfully");
+        reset();
+        setLoader(false);
+        setOpen(false);
+        await dispatch(dashboardProductsAction());
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Product creation failed");
+      }
+    };
 
 export const deleteProduct =
   (toast, productId, setLoader, setOpenDeleteModal) =>
-  async (dispatch, getState) => {
-    try {
-      setLoader(true);
+    async (dispatch, getState) => {
+      try {
+        setLoader(true);
 
-      await api.delete(`/admin/products/${productId}`);
-      toast.success("Product delete succesfully");
-      setLoader(false);
-      setOpenDeleteModal(false);
-      await dispatch(dashboardProductsAction());
-    } catch (error) {
-      //  console.log(error);
-      toast.error(error?.response?.data?.message || "Error Occurred!");
-    }
-  };
+        await api.delete(`/admin/products/${productId}`);
+        toast.success("Product delete succesfully");
+        setLoader(false);
+        setOpenDeleteModal(false);
+        await dispatch(dashboardProductsAction());
+      } catch (error) {
+        //  console.log(error);
+        toast.error(error?.response?.data?.message || "Error Occurred!");
+      }
+    };
 
 export const updateProductImageFromDashboard =
   (formData, productId, toast, setLoader, setOpen) => async (dispatch) => {
@@ -560,44 +562,44 @@ export const updateCategoryFromDashboard =
 
 export const deleteCategory =
   (toast, categoryId, setLoader, setOpenDeleteModal) =>
-  async (dispatch, getState) => {
-    try {
-      setLoader(true);
+    async (dispatch, getState) => {
+      try {
+        setLoader(true);
 
-      await api.delete(`/admin/categories/${categoryId}`);
-      toast.success("Category delete succesfully");
+        await api.delete(`/admin/categories/${categoryId}`);
+        toast.success("Category delete succesfully");
 
-      setOpenDeleteModal(false);
-      await dispatch(getCategoriesFromDashboard());
-    } catch (error) {
-      //  console.log(error);
-      toast.error(error?.response?.data?.message || "Error Occurred!");
-    } finally {
-      setLoader(false);
-    }
-  };
+        setOpenDeleteModal(false);
+        await dispatch(getCategoriesFromDashboard());
+      } catch (error) {
+        //  console.log(error);
+        toast.error(error?.response?.data?.message || "Error Occurred!");
+      } finally {
+        setLoader(false);
+      }
+    };
 export const addNewCategoryFromDashboard =
   (sendData, toast, reset, setLoader, setOpen) =>
-  async (dispatch, getState) => {
-    try {
-      setLoader(true);
-      await api.post(
-        `/admin/categories`,
-        sendData
-      );
-      toast.success("Category created successfully");
-      reset();
-      setOpen(false);
-      await dispatch(getCategoriesFromDashboard());
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message || "Category creation failed");
-    } finally {
-      setLoader(false);
-    }
-  };
+    async (dispatch, getState) => {
+      try {
+        setLoader(true);
+        await api.post(
+          `/admin/categories`,
+          sendData
+        );
+        toast.success("Category created successfully");
+        reset();
+        setOpen(false);
+        await dispatch(getCategoriesFromDashboard());
+      } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Category creation failed");
+      } finally {
+        setLoader(false);
+      }
+    };
 
-  export const getSellerFromDashboard = (queryString) => async (dispatch) => {
+export const getSellerFromDashboard = (queryString) => async (dispatch) => {
   try {
     dispatch({ type: "IS_FETCHING" });
 

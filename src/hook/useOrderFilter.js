@@ -17,6 +17,7 @@ export const useOrderFilter = () => {
       : 1;
 
     params.set("pageNumber", currentPage - 1);
+    params.set("sortOrder","desc");
 
     const queryString = params.toString();
     console.log("Query String: " + queryString);

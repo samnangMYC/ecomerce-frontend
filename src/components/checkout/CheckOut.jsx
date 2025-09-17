@@ -47,7 +47,7 @@ const CheckOut = () => {
   return (
     <div className="min-h-screen bg-gray-50 scroll-smooth">
       {/* Stepper */}
-      <div className="bg-white shadow-sm py-6 md:px-14 top-0 sticky z-40">
+      <div className="bg-white sticky top-0 z-40 bg-white shadow-sm py-6 md:px-14">
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={index}>

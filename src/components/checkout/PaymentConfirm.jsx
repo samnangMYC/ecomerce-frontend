@@ -5,6 +5,7 @@ import Skeleton from "../shared/Skeleton";
 import { CheckCircle, XCircle } from "lucide-react";
 import { stripePaymentConfirmation } from "../../store/actions";
 import toast from "react-hot-toast";
+import ErrorPage from "../shared/ErrorPage";
 
 const PaymentConfirm = () => {
   const location = useLocation();
@@ -12,9 +13,10 @@ const PaymentConfirm = () => {
   const dispatch = useDispatch();
 
   const { cart } = useSelector((state) => state.carts);
+   const { errorMessage } = useSelector((state) => state.error);
 
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+   const [loading, setLoading] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
 
   const paymentIntent = searchParams.get("payment_intent");
   const clientSecret = searchParams.get("payment_intent_client_secret");
@@ -23,7 +25,6 @@ const PaymentConfirm = () => {
   const selectedUserCheckoutAddress = localStorage.getItem("CHECKOUT_ADDRESS")
     ? JSON.parse(localStorage.getItem("CHECKOUT_ADDRESS"))
     : [];
-  // const selectedUserCheckOutAddress = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (
@@ -45,11 +46,9 @@ const PaymentConfirm = () => {
       console.log(sendData);
 
       dispatch(
-        stripePaymentConfirmation(sendData, setErrorMessage, setLoading, toast)
+        stripePaymentConfirmation(sendData, setLoading, toast)
       );
-    } else {
-      setLoading(false);
-    }
+    } 
   }, [paymentIntent, clientSecret, redirectStatus, cart]);
 
   const isSuccess = redirectStatus === "succeeded";
@@ -58,7 +57,9 @@ const PaymentConfirm = () => {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       {loading ? (
         <Skeleton className="h-[300px] w-full max-w-xl" />
-      ) : (
+      ) : errorMessage ? (
+          <ErrorPage message={errorMessage}/>
+      ) :(
         <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-2xl space-y-6">
           <div className="text-center">
             {isSuccess ? (

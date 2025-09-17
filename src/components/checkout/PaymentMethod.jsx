@@ -6,7 +6,6 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { addPaymentMethod, createUserCart } from "../../store/actions";
-import ErrorPage from "../shared/ErrorPage";
 
 const PaymentMethod = () => {
   const dispatch = useDispatch();
@@ -52,7 +51,7 @@ const PaymentMethod = () => {
         </RadioGroup>
       </FormControl>
 
-      {/* {errorMessage && <ErrorPage message={errorMessage} />} */}
+      {errorMessage && <ErrorPage message={errorMessage} />}
     </div>
   );
 };

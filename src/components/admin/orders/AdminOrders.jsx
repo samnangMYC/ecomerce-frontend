@@ -3,6 +3,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useOrderFilter } from "../../../hook/useOrderFilter";
 import Loader from "../../shared/Loader";
+import ErrorPage from "../../shared/ErrorPage";
 
 const AdminOrders = () => {
   const { adminOrder, pagination } = useSelector((state) => state.orders);
@@ -11,6 +12,7 @@ const AdminOrders = () => {
   useOrderFilter();
 
   const emptyOrder = !adminOrder || adminOrder?.length === 0;
+  
   return (
     <div className="pt-6 pb-6  ">
       {emptyOrder ? (
@@ -34,11 +36,16 @@ const AdminOrders = () => {
         </div>
       ) : isLoading ? (
         <Loader />
+      ) : errorMessage ? (
+        <div>
+          <ErrorPage message={errorMessage} />
+        </div>
       ) : (
         <div className="w-full overflow-x-auto ">
           <OrderTable adminOrders={adminOrder} pagination={pagination} />
         </div>
-      )}
+      )
+    }
     </div>
   );
 };
